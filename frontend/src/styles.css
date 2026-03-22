@@ -1,0 +1,146 @@
+/* body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+}
+
+/* Navbar */
+/* nav {
+  background-color: #333;
+  padding: 10px;
+} */
+
+/* nav a {
+  color: white;
+  margin-right: 15px;
+  text-decoration: none;
+} */
+
+/* Container */
+/* div {
+  margin: 10px;
+} */
+
+/* Card style */
+/* .card {
+  background: white;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 5px;
+  box-shadow: 0 0 5px gray;
+} */
+
+/* Buttons */
+/* button {
+  padding: 8px 12px;
+  background-color: teal;
+  color: white;
+  border: none;
+  cursor: pointer;
+} */
+
+/* button:hover {
+  background-color: darkcyan;
+} */
+
+/* Input fields */
+/* input, select {
+  display: block;
+  margin: 5px 0;
+  padding: 8px;
+  width: 200px;
+} */ 
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+:root {
+  --primary: #1a1a2e;
+  --accent: #e8b86d;
+  --accent-dark: #c9952a;
+  --bg: #faf9f6;
+  --bg-card: #ffffff;
+  --text: #1a1a2e;
+  --text-muted: #6b6b80;
+  --border: #e8e8e0;
+  --radius: 16px;
+  --shadow: 0 4px 24px rgba(26,26,46,0.08);
+  --shadow-hover: 0 12px 40px rgba(26,26,46,0.14);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Playfair Display', serif;
+}
+
+a { text-decoration: none; color: inherit; }
+
+button {
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  border: none;
+  outline: none;
+}
+
+input, select, textarea {
+  font-family: 'DM Sans', sans-serif;
+  outline: none;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: var(--primary);
+  padding: 12px 28px;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 15px;
+  transition: all 0.2s;
+  border: 2px solid var(--accent);
+}
+
+.btn-primary:hover {
+  background: var(--accent-dark);
+  border-color: var(--accent-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(232,184,109,0.35);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--primary);
+  padding: 12px 28px;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 15px;
+  border: 2px solid var(--primary);
+  transition: all 0.2s;
+}
+
+.btn-outline:hover {
+  background: var(--primary);
+  color: #fff;
+}
+
+/* Page transitions */
+.page-enter {
+  animation: fadeUp 0.4s ease forwards;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
