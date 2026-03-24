@@ -11,6 +11,8 @@ import OwnerDashboard from './pages/OwnerDashboard';
 import AdminDashboard from './pages/AdminDashboard';
 import AddProperty from './pages/AddProperty';
 import PropertyDetail from './pages/PropertyDetail';
+import VerifyOtp from './pages/VerifyOtp';
+import ForgotPassword from './pages/ForgotPassword';
 import './styles.css';
 
 const PrivateRoute = ({ children, role }) => {
@@ -28,6 +30,8 @@ function AppContent() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/verify-otp" element={<VerifyOtp />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
 
         <Route path="/dashboard" element={
           <PrivateRoute><Dashboard /></PrivateRoute>

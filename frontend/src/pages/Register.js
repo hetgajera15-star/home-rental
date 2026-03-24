@@ -1,52 +1,23 @@
-// import { useState } from "react";
-// import API from "../services/api";
-
-// function Register() {
-//   const [form, setForm] = useState({});
-
-//   const handleRegister = async () => {
-//     await API.post("/auth/register", form);
-//     alert("Registered");
-//   };
-
-//   return (
-//     <div>
-//       <h2>Register</h2>
-//       <input placeholder="Name" onChange={e => setForm({...form, name: e.target.value})}/>
-//       <input placeholder="Email" onChange={e => setForm({...form, email: e.target.value})}/>
-//       <input placeholder="Password" onChange={e => setForm({...form, password: e.target.value})}/>
-//       <select onChange={e => setForm({...form, role: e.target.value})}>
-//         <option value="tenant">Tenant</option>
-//         <option value="owner">Owner</option>
-//       </select>
-//       <button onClick={handleRegister}>Register</button>
-//     </div>
-//   );
-// }
-
-// export default Register;
-
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext';
+import { registerUser } from '../services/api'; // ✅ FIX 1: direct import
 
 const Register = () => {
-  const { register } = useContext(AuthContext);
   const [form, setForm] = useState({ name: '', email: '', password: '', role: 'tenant' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  // ✅ FIX 2: form use karo, formData nahi. loading state add kiya
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (form.password.length < 6) return setError('Password must be at least 6 characters');
-    setLoading(true); setError('');
+    setLoading(true);
+    setError('');
     try {
-      const user = await register(form);
-      if (user.role === 'owner') navigate('/owner-dashboard');
-      else navigate('/dashboard');
+      await registerUser(form);
+      navigate('/verify-otp', { state: { email: form.email } });
     } catch (err) {
-      setError(err.response?.data?.message || 'Registration failed');
+      setError(err.response?.data?.msg || 'Registration failed');
     } finally {
       setLoading(false);
     }
@@ -109,7 +80,7 @@ const Register = () => {
           {error && <div style={styles.error}>{error}</div>}
 
           <button type="submit" style={styles.btn} disabled={loading}>
-            {loading ? 'Creating account...' : 'Create Account'}
+            {loading ? 'Sending OTP...' : 'Create Account'}
           </button>
         </form>
 

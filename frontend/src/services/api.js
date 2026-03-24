@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: 'https://home-rental-vrbh.onrender.com/api',
+  baseURL: 'http://localhost:5000/api',
 });
 
 API.interceptors.request.use((req) => {
@@ -13,6 +13,20 @@ API.interceptors.request.use((req) => {
 // Auth
 export const loginUser = (data) => API.post('/auth/login', data);
 export const registerUser = (data) => API.post('/auth/register', data);
+
+// =============================================
+// ADD these lines to your existing frontend/src/services/api.js
+// (add after the existing registerUser export)
+// =============================================
+
+// OTP - Register flow
+export const verifyRegisterOtp = (data) => API.post('/auth/verify-register', data);
+
+// Forgot Password flow
+export const forgotPassword = (data) => API.post('/auth/forgot-password', data);
+export const verifyForgotOtp = (data) => API.post('/auth/verify-forgot-otp', data);
+export const resetPassword = (data) => API.post('/auth/reset-password', data);
+
 
 // Properties
 export const getProperties = (params) => API.get('/properties', { params });

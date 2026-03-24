@@ -102,6 +102,14 @@ const Login = () => {
           <button type="submit" style={styles.btn} disabled={loading}>
             {loading ? 'Signing in...' : 'Sign In'}
           </button>
+
+           <p
+            onClick={() => navigate('/forgot-password')}
+            style={styles.forgotLink}
+          >
+            Forgot Password?
+          </p>
+          
         </form>
 
         <p style={styles.footer}>
