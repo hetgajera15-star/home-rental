@@ -50,7 +50,7 @@ const Register = () => {
             <label style={styles.label}>Full Name</label>
             <input
               type="text" style={styles.input}
-              placeholder="John Doe"
+              placeholder="Enter Name"
               value={form.name}
               onChange={e => setForm({...form, name: e.target.value})}
               required
