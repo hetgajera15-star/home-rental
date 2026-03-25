@@ -32,9 +32,10 @@ const express = require("express");
 const connectDB = require("./config/db");
 const cors = require("cors");
 
-// Only use dotenv in local development
+// Load .env only in development
 if (process.env.NODE_ENV !== 'production') {
-  require("dotenv").config();
+  const dotenv = require("dotenv");
+  dotenv.config();
 }
 
 // Validate critical environment variables
@@ -51,9 +52,37 @@ const app = express();
 // DB connect
 connectDB();
 
-// Middleware
+// Middleware - CORS Configuration
+const corsOptions = {
+  origin: function (origin, callback) {
+    // Allow localhost and all vercel deployments
+    const allowedOrigins = [
+      'http://localhost:3000',
+      'http://localhost:3001',
+      'http://127.0.0.1:3000',
+    ];
+    
+    // Allow all vercel.app domains and render domains
+    if (!origin || 
+        origin.includes('vercel.app') || 
+        origin.includes('localhost') ||
+        origin.includes('127.0.0.1')) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
-app.use(cors());
+app.use(express.urlencoded({ extended: true }));
+
+// Handle preflight requests
+app.options('*', cors(corsOptions));
 
 // Routes
 app.use("/api/auth", require("./routes/authRoutes"));

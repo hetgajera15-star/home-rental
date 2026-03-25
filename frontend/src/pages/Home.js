@@ -84,7 +84,7 @@ const Home = () => {
 
           {/* Stats */}
           <div style={styles.stats}>
-            {[['50+', 'Properties'], ['10+', 'Cities'], ['98%', 'Satisfaction']].map(([num, label]) => (
+            {[['15+', 'Properties'], ['5+', 'Cities'], ['98%', 'Satisfaction']].map(([num, label]) => (
               <div key={label} style={styles.stat}>
                 <span style={styles.statNum}>{num}</span>
                 <span style={styles.statLabel}>{label}</span>
