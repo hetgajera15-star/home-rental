@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import PropertyCard from '../components/PropertyCard';
 import { getProperties } from '../services/api';
 
-const PROPERTY_TYPES = ['All', 'Apartment', 'House', 'Villa', 'Studio', 'Condo'];
+const PROPERTY_TYPES = ['All', 'Apartment', 'House', 'Villa', 'Studio', 'farmhouse'];
 
 const Home = () => {
   const [properties, setProperties] = useState([]);
