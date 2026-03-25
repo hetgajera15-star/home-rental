@@ -37,6 +37,15 @@ if (process.env.NODE_ENV !== 'production') {
   require("dotenv").config();
 }
 
+// Validate critical environment variables
+const requiredEnvVars = ['MONGO_URI', 'JWT_SECRET', 'EMAIL_USER', 'EMAIL_PASS'];
+const missingEnvVars = requiredEnvVars.filter(envVar => !process.env[envVar]);
+
+if (missingEnvVars.length > 0) {
+  console.warn(`⚠️ Missing environment variables: ${missingEnvVars.join(', ')}`);
+  console.warn('OTP and email features will not work properly. Please configure these in your deployment environment.');
+}
+
 const app = express();
 
 // DB connect
@@ -56,6 +65,12 @@ app.use("/api/admin", require("./routes/adminRoutes"));
 // Root
 app.get("/", (req, res) => {
   res.send("Backend Running 🚀");
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error("Error:", err);
+  res.status(500).json({ error: err.message });
 });
 
 // Server

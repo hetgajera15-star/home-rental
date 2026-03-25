@@ -54,6 +54,11 @@ exports.register = async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
 
+    // Validate required fields
+    if (!name || !email || !password) {
+      return res.status(400).json({ msg: "Missing required fields" });
+    }
+
     // Check if email already registered
     const existing = await User.findOne({ email });
     if (existing) {
@@ -73,11 +78,27 @@ exports.register = async (req, res) => {
       tempUser: { name, password, role: role || "tenant" }
     });
 
-    await sendOtpEmail(email, otp, "register");
+    // Send OTP email
+    try {
+      await sendOtpEmail(email, otp, "register");
+      console.log(`✅ OTP registration started for ${email}`);
+    } catch (emailErr) {
+      // Delete the OTP if email fails
+      await Otp.deleteMany({ email, type: "register" });
+      console.error(`❌ Email send failed for ${email}:`, emailErr.message);
+      return res.status(500).json({ 
+        msg: "Failed to send OTP. Please check your email or try again later.",
+        error: emailErr.message 
+      });
+    }
 
     res.json({ msg: "OTP sent to your email. Please verify.", email });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error("Register error:", err);
+    res.status(500).json({ 
+      msg: "Registration failed. Please try again.",
+      error: err.message 
+    });
   }
 };
 
@@ -130,6 +151,10 @@ exports.forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
 
+    if (!email) {
+      return res.status(400).json({ msg: "Email is required" });
+    }
+
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(404).json({ msg: "No account with this email" });
@@ -140,11 +165,27 @@ exports.forgotPassword = async (req, res) => {
     await Otp.deleteMany({ email, type: "forgot" });
     await Otp.create({ email, otp, type: "forgot" });
 
-    await sendOtpEmail(email, otp, "forgot");
+    // Send OTP email
+    try {
+      await sendOtpEmail(email, otp, "forgot");
+      console.log(`✅ OTP forgot password sent to ${email}`);
+    } catch (emailErr) {
+      // Delete the OTP if email fails
+      await Otp.deleteMany({ email, type: "forgot" });
+      console.error(`❌ Email send failed for ${email}:`, emailErr.message);
+      return res.status(500).json({ 
+        msg: "Failed to send OTP. Please try again later.",
+        error: emailErr.message 
+      });
+    }
 
     res.json({ msg: "OTP sent to your email.", email });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error("Forgot password error:", err);
+    res.status(500).json({ 
+      msg: "Something went wrong. Please try again.",
+      error: err.message 
+    });
   }
 };
 

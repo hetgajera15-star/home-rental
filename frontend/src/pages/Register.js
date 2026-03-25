@@ -14,10 +14,27 @@ const Register = () => {
     setLoading(true);
     setError('');
     try {
-      await registerUser(form);
-      navigate('/verify-otp', { state: { email: form.email } });
+      const response = await registerUser(form);
+      // Check if we got a success response
+      if (response.data?.msg?.includes('OTP sent')) {
+        navigate('/verify-otp', { state: { email: form.email } });
+      } else {
+        setError('Registration initiated but no confirmation received. Please try again.');
+      }
     } catch (err) {
-      setError(err.response?.data?.msg || 'Registration failed');
+      const errorMsg = err.response?.data?.msg || err.response?.data?.error || err.message;
+      console.error('Registration error:', errorMsg);
+      
+      // Provide helpful error messages
+      if (errorMsg.includes('Email already registered')) {
+        setError('This email is already registered. Please login or use a different email.');
+      } else if (errorMsg.includes('Failed to send OTP')) {
+        setError('⚠️ Email service error: Check that environment variables are configured on Render. See the setup guide.');
+      } else if (errorMsg.includes('Missing required')) {
+        setError('Please fill in all fields correctly.');
+      } else {
+        setError(errorMsg || 'Registration failed. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
