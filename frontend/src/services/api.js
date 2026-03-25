@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: 'https://home-rental-vrbh.onrender.com/api',
+  // baseURL: 'https://home-rental-vrbh.onrender.com/api',
+  baseURL: 'https://home-rental-ew53.vercel.app/api',
 });
 
 API.interceptors.request.use((req) => {
